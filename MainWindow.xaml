@@ -1,0 +1,99 @@
+<Window
+	x:Class="App2.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:App2"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+	xmlns:fontIcon="using:CommunityToolkit.WinUI"
+	mc:Ignorable="d"
+	Title="App2">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<TitleBar x:Name="AppTitleBar" Height="48" Title="{x:Bind GetAppTitleFromSystem()}" Subtitle="{x:Bind GetVersionForBuild()}" IsBackButtonVisible="False" IsPaneToggleButtonVisible="False" />
+			<!-- <TitleBar.IconSource> -->
+			<!-- 	<BitmapIconSource ShowAsMonochrome="False" UriSource="ms-appx:///Assets/Wide310x150Logo.scale-200.png" /> -->
+			<!-- </TitleBar.IconSource> -->
+		</Grid>
+		<Grid Grid.Row="1" Margin="12,0,12,0">
+			<controls:TabbedCommandBar>
+				<controls:TabbedCommandBar.PaneFooter>
+					<CommandBar Background="Transparent" DefaultLabelPosition="Right">
+						<AppBarButton Label="设置" Icon="{fontIcon:FontIcon Glyph=&#xE713;}" />
+					</CommandBar>
+				</controls:TabbedCommandBar.PaneFooter>
+				<controls:TabbedCommandBar.MenuItems>
+					<controls:TabbedCommandBarItem Header="开始">
+						<AppBarElementContainer Margin="6,0,6,0">
+							<controls:Segmented SelectionMode="Single">
+								<controls:SegmentedItem Content="全部删除" ToolTipService.ToolTip="不保留数据刷机" Tag="Delete" />
+								<controls:SegmentedItem Content="保留数据" ToolTipService.ToolTip="保留数据刷机" Tag="Retain" />
+								<controls:SegmentedItem Content="删除并Lock" ToolTipService.ToolTip="不保留数据刷机并上锁" Tag="DeleteAndLock" />
+							</controls:Segmented>
+						</AppBarElementContainer>
+						<AppBarElementContainer>
+							<ComboBox x:Name="ChooseSocComboBox" PlaceholderText="选择SOC类型" Width="150" Margin="0,0,6,0" SelectionChanged="ChooseSocComboBox_OnSelectionChanged">
+								<x:String>Qualcomm</x:String>
+								<x:String>MTK</x:String>
+							</ComboBox>
+						</AppBarElementContainer>
+					</controls:TabbedCommandBarItem>
+				</controls:TabbedCommandBar.MenuItems>
+			</controls:TabbedCommandBar>
+		</Grid>
+		<Border Grid.Row="2" Margin="12,6,12,6" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+			<Grid>
+				<Grid x:Name="QualcommGrid" Height="48" Visibility="Collapsed">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<Button Grid.Column="0" MinWidth="150" Content="选择包Qualcomm" VerticalAlignment="Center" Margin="12,0,6,0" />
+					<TextBox Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
+					<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+						<Button MinWidth="80" Content="加载设备" Margin="0,0,6,0" />
+						<Button MinWidth="80" Content="刷机" Margin="0,0,12,0" />
+					</StackPanel>
+				</Grid>
+				<Grid x:Name="MTKGrid" Height="144" Visibility="Collapsed">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="48"/>
+						<RowDefinition Height="48" />
+						<RowDefinition Height="48" />
+					</Grid.RowDefinitions>
+
+					<Button Grid.Row="0" Grid.Column="0" MinWidth="150" Content="选择Scatter" VerticalAlignment="Center" Margin="12,0,6,0" />
+					<TextBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
+					<StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+						<Button MinWidth="80" Content="下载" Margin="0,0,6,0" />
+						<Button MinWidth="80" Content="暂停" Margin="0,0,6,0" />
+					</StackPanel>
+					<Button Grid.Row="1" Grid.Column="0" MinWidth="150" Content="选择DA" VerticalAlignment="Center" Margin="12,0,6,0" />
+					<TextBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
+					<Button Grid.Row="2" Grid.Column="0" MinWidth="150" Content="选择Auth" VerticalAlignment="Center" Margin="12,0,6,0" />
+					<TextBox Grid.Row="2" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
+				</Grid>
+			</Grid>
+		</Border>
+		<Grid Grid.Row="3" Margin="12,0,12,12">
+			<RichEditBox CornerRadius="{ThemeResource OverlayCornerRadius}" />
+		</Grid>
+	</Grid>
+</Window>
