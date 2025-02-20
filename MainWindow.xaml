@@ -52,7 +52,7 @@
 				</controls:TabbedCommandBar.MenuItems>
 			</controls:TabbedCommandBar>
 		</Grid>
-		<Border Grid.Row="2" Margin="12,6,12,6" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+		<Border Grid.Row="2" Margin="12,6,12,6" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
 			<Grid>
 				<Grid x:Name="QualcommGrid" Height="48" Visibility="Collapsed">
 					<Grid.ColumnDefinitions>
@@ -74,11 +74,10 @@
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="48"/>
+						<RowDefinition Height="48" />
 						<RowDefinition Height="48" />
 						<RowDefinition Height="48" />
 					</Grid.RowDefinitions>
-
 					<Button Grid.Row="0" Grid.Column="0" MinWidth="150" Content="选择Scatter" VerticalAlignment="Center" Margin="12,0,6,0" />
 					<TextBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
 					<StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -92,8 +91,29 @@
 				</Grid>
 			</Grid>
 		</Border>
-		<Grid Grid.Row="3" Margin="12,0,12,12">
-			<RichEditBox CornerRadius="{ThemeResource OverlayCornerRadius}" />
-		</Grid>
+		<Border Grid.Row="3" Margin="12,0,12,12" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+			<Grid>
+				<ListView>
+					<ListView.Header>
+						<Grid Padding="16,12" ColumnSpacing="16">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="75" />
+								<ColumnDefinition Width="75" />
+								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="100" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Grid.Column="0" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="编号" />
+							<TextBlock Grid.Column="1" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="设备" />
+							<TextBlock Grid.Column="2" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="进度" />
+							<TextBlock Grid.Column="3" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="时间" />
+							<TextBlock Grid.Column="4" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="状态" />
+							<TextBlock Grid.Column="5" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="结果" />
+						</Grid>
+					</ListView.Header>
+				</ListView>
+			</Grid>
+		</Border>
 	</Grid>
 </Window>
