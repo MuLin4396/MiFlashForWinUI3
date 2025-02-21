@@ -22,9 +22,6 @@
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
 			<TitleBar x:Name="AppTitleBar" Height="48" Title="{x:Bind GetAppTitleFromSystem()}" Subtitle="{x:Bind GetVersionForBuild()}" IsBackButtonVisible="False" IsPaneToggleButtonVisible="False" />
-			<!-- <TitleBar.IconSource> -->
-			<!-- 	<BitmapIconSource ShowAsMonochrome="False" UriSource="ms-appx:///Assets/Wide310x150Logo.scale-200.png" /> -->
-			<!-- </TitleBar.IconSource> -->
 		</Grid>
 		<Grid Grid.Row="1" Margin="12,0,12,0">
 			<controls:TabbedCommandBar>
@@ -48,6 +45,14 @@
 								<x:String>MTK</x:String>
 							</ComboBox>
 						</AppBarElementContainer>
+						<AppBarElementContainer>
+							<ComboBox x:Name="ChooseModeComboBox" PlaceholderText="选择刷机模式" Width="150" Margin="0,0,6,0">
+								<x:String>XiaoMi</x:String>
+								<x:String>9008</x:String>
+							</ComboBox>
+						</AppBarElementContainer>
+					</controls:TabbedCommandBarItem>
+					<controls:TabbedCommandBarItem Header="登录">
 					</controls:TabbedCommandBarItem>
 				</controls:TabbedCommandBar.MenuItems>
 			</controls:TabbedCommandBar>
@@ -60,7 +65,7 @@
 						<ColumnDefinition Width="*" />
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
-					<Button Grid.Column="0" MinWidth="150" Content="选择包Qualcomm" VerticalAlignment="Center" Margin="12,0,6,0" />
+					<Button Grid.Column="0" MinWidth="150" Content="选择包" VerticalAlignment="Center" Margin="12,0,6,0" />
 					<TextBox Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
 					<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
 						<Button MinWidth="80" Content="加载设备" Margin="0,0,6,0" />
@@ -81,13 +86,16 @@
 					<Button Grid.Row="0" Grid.Column="0" MinWidth="150" Content="选择Scatter" VerticalAlignment="Center" Margin="12,0,6,0" />
 					<TextBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
 					<StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-						<Button MinWidth="80" Content="下载" Margin="0,0,6,0" />
-						<Button MinWidth="80" Content="暂停" Margin="0,0,6,0" />
+						<Button MinWidth="172" Content="加载设备" Margin="0,0,6,0" />
 					</StackPanel>
 					<Button Grid.Row="1" Grid.Column="0" MinWidth="150" Content="选择DA" VerticalAlignment="Center" Margin="12,0,6,0" />
 					<TextBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
 					<Button Grid.Row="2" Grid.Column="0" MinWidth="150" Content="选择Auth" VerticalAlignment="Center" Margin="12,0,6,0" />
 					<TextBox Grid.Row="2" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
+					<StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+						<Button MinWidth="80" Content="暂停" Margin="0,0,6,0" IsEnabled="False" />
+						<Button MinWidth="80" Content="刷机" Margin="0,0,12,0" />
+					</StackPanel>
 				</Grid>
 			</Grid>
 		</Border>
