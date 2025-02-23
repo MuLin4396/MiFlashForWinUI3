@@ -100,10 +100,10 @@
 			</Grid>
 		</Border>
 		<Border Grid.Row="3" Margin="12,0,12,12" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
-			<Grid>
-				<ListView ItemsSource="{x:Bind InventoryItems}">
-					<ListView.Header>
-						<Grid Padding="16,12" ColumnSpacing="16">
+			<ListView ItemsSource="{x:Bind InventoryItems}">
+				<ListView.Header>
+					<Border Margin="6,6,6,6" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+						<Grid Padding="16,10" ColumnSpacing="16">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="75" />
 								<ColumnDefinition Width="75" />
@@ -119,30 +119,29 @@
 							<TextBlock Grid.Column="4" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="状态" Tag="State" />
 							<TextBlock Grid.Column="5" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="结果" Tag="Results" />
 						</Grid>
-					</ListView.Header>
-					<ListView.ItemTemplate>
-						<DataTemplate x:DataType="local:InventoryItem">
-							<Grid ColumnSpacing="16">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="75" />
-									<ColumnDefinition Width="75" />
-									<ColumnDefinition Width="100" />
-									<ColumnDefinition Width="100" />
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="100" />
-								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
-								<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />
-								<!-- <TextBlock Grid.Column="2" TextAlignment="Center" Text="{x:Bind Load}" /> -->
-								<ProgressBar Grid.Column="2" Width="80" Value="{x:Bind Load}" />
-								<TextBlock Grid.Column="3" TextAlignment="Center" Text="{x:Bind Time}" />
-								<TextBlock Grid.Column="4" TextAlignment="Center" Text="{x:Bind State}" />
-								<TextBlock Grid.Column="5" TextAlignment="Center" Text="{x:Bind Results}" />
-							</Grid>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>
-			</Grid>
+					</Border>
+				</ListView.Header>
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="local:InventoryItem">
+						<Grid ColumnSpacing="16">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="75" />
+								<ColumnDefinition Width="75" />
+								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="100" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
+							<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />
+							<ProgressBar Grid.Column="2" Width="80" Value="{x:Bind Load}" />
+							<TextBlock Grid.Column="3" TextAlignment="Center" Text="{x:Bind Time}" />
+							<TextBlock Grid.Column="4" TextAlignment="Center" Text="{x:Bind State}" />
+							<TextBlock Grid.Column="5" TextAlignment="Center" Text="{x:Bind Results}" />
+						</Grid>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
 		</Border>
 	</Grid>
 </Window>
