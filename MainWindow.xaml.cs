@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel;
 using Microsoft.UI.Composition.SystemBackdrops;
@@ -25,7 +26,12 @@ namespace App2
 
 			SetTitleBar(AppTitleBar);
 
-			InventoryItems = new ObservableCollection<InventoryItem>
+			InventoryItems = new ObservableCollection<InventoryItem>(GenerateInitialInventoryItems());
+		}
+
+		private IEnumerable<InventoryItem> GenerateInitialInventoryItems()
+		{
+			return new[]
 			{
 				new InventoryItem
 				{

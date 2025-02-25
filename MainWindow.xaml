@@ -102,7 +102,7 @@
 		<Border Grid.Row="3" Margin="12,0,12,12" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
 			<ListView ItemsSource="{x:Bind InventoryItems}">
 				<ListView.Header>
-					<Border Margin="6,6,6,6" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+					<Border Margin="6,6,6,6" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource ControlCornerRadius}">
 						<Grid Padding="16,10" ColumnSpacing="16">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="75" />
