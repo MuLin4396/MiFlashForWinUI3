@@ -21,7 +21,7 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
-			<TitleBar x:Name="AppTitleBar" Height="48" Title="{x:Bind GetAppTitleFromSystem()}" Subtitle="{x:Bind GetVersionForBuild()}" IsBackButtonVisible="False" IsPaneToggleButtonVisible="False" />
+			<TitleBar Grid.Column="0" x:Name="AppTitleBar" Height="48" Title="{x:Bind GetAppTitleFromSystem()}" Subtitle="{x:Bind GetVersionForBuild()}" IsBackButtonVisible="False" IsPaneToggleButtonVisible="False" />
 		</Grid>
 		<Grid Grid.Row="1" Margin="12,0,12,0">
 			<controls:TabbedCommandBar>
@@ -31,28 +31,33 @@
 					</CommandBar>
 				</controls:TabbedCommandBar.PaneFooter>
 				<controls:TabbedCommandBar.MenuItems>
-					<controls:TabbedCommandBarItem Header="开始">
+					<controls:TabbedCommandBarItem x:Name="TabbedCommandBarItem" Header="开始">
 						<AppBarElementContainer Margin="6,0,6,0">
-							<controls:Segmented SelectionMode="Single">
-								<controls:SegmentedItem Content="全部删除" ToolTipService.ToolTip="不保留数据刷机" Tag="Delete" />
-								<controls:SegmentedItem Content="保留数据" ToolTipService.ToolTip="保留数据刷机" Tag="Retain" />
-								<controls:SegmentedItem Content="删除并Lock" ToolTipService.ToolTip="不保留数据刷机并上锁" Tag="DeleteAndLock" />
-							</controls:Segmented>
-						</AppBarElementContainer>
-						<AppBarElementContainer>
-							<ComboBox x:Name="ChooseSocComboBox" PlaceholderText="选择SOC类型" Width="150" Margin="0,0,6,0" SelectionChanged="ChooseSocComboBox_OnSelectionChanged">
-								<x:String>Qualcomm</x:String>
-								<x:String>MTK</x:String>
-							</ComboBox>
-						</AppBarElementContainer>
-						<AppBarElementContainer>
-							<ComboBox x:Name="ChooseModeComboBox" PlaceholderText="选择刷机模式" Width="150" Margin="0,0,6,0">
-								<x:String>XiaoMi</x:String>
-								<x:String>9008</x:String>
-							</ComboBox>
+							<StackPanel Orientation="Horizontal">
+								<controls:Segmented SelectionMode="Single">
+									<controls:SegmentedItem Content="全部删除" ToolTipService.ToolTip="不保留数据刷机" Tag="Delete" />
+									<controls:SegmentedItem Content="保留数据" ToolTipService.ToolTip="保留数据刷机" Tag="Retain" />
+									<controls:SegmentedItem Content="删除并Lock" ToolTipService.ToolTip="不保留数据刷机并上锁" Tag="DeleteAndLock" />
+								</controls:Segmented>
+								<ComboBox x:Name="ChooseSocComboBox" Margin="12,0,0,0" PlaceholderText="选择SOC类型" Width="150" SelectionChanged="ChooseSocComboBox_OnSelectionChanged">
+									<x:String>Qualcomm</x:String>
+									<x:String>MTK</x:String>
+								</ComboBox>
+								<ComboBox x:Name="ChooseModeComboBox" Margin="12,0,0,0" PlaceholderText="选择刷机模式" Width="150">
+									<x:String>XiaoMi</x:String>
+									<x:String>9008</x:String>
+								</ComboBox>
+								<Button Content="加载设备" Margin="12,0,0,0" Width="80" />
+								<Button Content="刷机" Margin="12,0,0,0" Width="80" />
+							</StackPanel>
 						</AppBarElementContainer>
 					</controls:TabbedCommandBarItem>
 					<controls:TabbedCommandBarItem Header="登录">
+						<AppBarElementContainer>
+							<Grid>
+
+							</Grid>
+						</AppBarElementContainer>
 					</controls:TabbedCommandBarItem>
 				</controls:TabbedCommandBar.MenuItems>
 			</controls:TabbedCommandBar>
@@ -63,39 +68,26 @@
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
-					<Button Grid.Column="0" MinWidth="150" Content="选择包" VerticalAlignment="Center" Margin="12,0,6,0" />
-					<TextBox Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
-					<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-						<Button MinWidth="80" Content="加载设备" Margin="0,0,6,0" />
-						<Button MinWidth="80" Content="刷机" Margin="0,0,12,0" />
-					</StackPanel>
+					<Button Grid.Column="0" MinWidth="150" Content="选择包" VerticalAlignment="Center" Margin="12,0,12,0" />
+					<TextBox Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
 				</Grid>
 				<Grid x:Name="MTKGrid" Height="144" Visibility="Collapsed">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="48" />
 						<RowDefinition Height="48" />
 						<RowDefinition Height="48" />
 					</Grid.RowDefinitions>
-					<Button Grid.Row="0" Grid.Column="0" MinWidth="150" Content="选择Scatter" VerticalAlignment="Center" Margin="12,0,6,0" />
-					<TextBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
-					<StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-						<Button MinWidth="172" Content="加载设备" Margin="0,0,6,0" />
-					</StackPanel>
-					<Button Grid.Row="1" Grid.Column="0" MinWidth="150" Content="选择DA" VerticalAlignment="Center" Margin="12,0,6,0" />
-					<TextBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
-					<Button Grid.Row="2" Grid.Column="0" MinWidth="150" Content="选择Auth" VerticalAlignment="Center" Margin="12,0,6,0" />
-					<TextBox Grid.Row="2" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,6,0" />
-					<StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-						<Button MinWidth="80" Content="暂停" Margin="0,0,6,0" IsEnabled="False" />
-						<Button MinWidth="80" Content="刷机" Margin="0,0,12,0" />
-					</StackPanel>
+					<Button Grid.Row="0" Grid.Column="0" MinWidth="150" Content="选择Scatter" VerticalAlignment="Center" Margin="12,0,12,0" />
+					<TextBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
+					<Button Grid.Row="1" Grid.Column="0" MinWidth="150" Content="选择DA" VerticalAlignment="Center" Margin="12,0,12,0" />
+					<TextBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
+					<Button Grid.Row="2" Grid.Column="0" MinWidth="150" Content="选择Auth" VerticalAlignment="Center" Margin="12,0,12,0" />
+					<TextBox Grid.Row="2" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
 				</Grid>
 			</Grid>
 		</Border>
