@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel;
+using Windows.Storage.Pickers;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using WinRT.Interop;
 
 namespace App2
 {
@@ -75,6 +78,73 @@ namespace App2
 				QualcommGrid.Visibility = Visibility.Collapsed;
 				MTKGrid.Visibility      = Visibility.Visible;
 			}
+			TextBox_Clear();
+		}
+
+		private async void QualcommButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			QualcommButton.IsEnabled = false;
+
+			var openPicker = new FolderPicker();
+			var hWnd       = WindowNative.GetWindowHandle(new MainWindow());
+
+			InitializeWithWindow.Initialize(openPicker, hWnd);
+
+			openPicker.ViewMode               = PickerViewMode.Thumbnail;
+			openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+
+			var folder = await openPicker.PickSingleFolderAsync();
+
+			if (folder != null)
+			{
+				QualcommTextBox.Text = folder.Path;
+			}
+			else
+			{
+				QualcommTextBox.Text = "未选择文件";
+			}
+
+			QualcommButton.IsEnabled = true;
+		}
+
+		//todo 暂时搁置
+		private async void MTKButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			var senderButton = sender as Button;
+			senderButton.IsEnabled = false;
+
+			var openPicker = new FileOpenPicker();
+			var hWnd       = WindowNative.GetWindowHandle(new MainWindow());
+
+			InitializeWithWindow.Initialize(openPicker, hWnd);
+
+			openPicker.ViewMode               = PickerViewMode.Thumbnail;
+			openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+
+			openPicker.FileTypeFilter.Add((string)senderButton.Tag);
+
+			var file = await openPicker.PickSingleFileAsync();
+
+			if (file != null)
+			{
+				if (senderButton.Tag.ToString() == "img")
+				{
+					// TextBox.Text = folder.Path;
+				}
+			}
+			else
+			{
+				// TextBox.Text = "未选择文件";
+			}
+
+			senderButton.IsEnabled = true;
+		}
+
+		//todo 暂时搁置
+		private void TextBox_Clear()
+		{
+			QualcommTextBox.Text = string.Empty;
+			// TextBox.Text         = string.Empty;
 		}
 	}
 

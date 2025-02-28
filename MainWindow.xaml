@@ -26,7 +26,7 @@
 		<Grid Grid.Row="1" Margin="12,0,12,0">
 			<controls:TabbedCommandBar>
 				<controls:TabbedCommandBar.PaneFooter>
-					<CommandBar Background="Transparent" DefaultLabelPosition="Right">
+					<CommandBar DefaultLabelPosition="Right">
 						<AppBarButton Label="设置" Icon="{fontIcon:FontIcon Glyph=&#xE713;}" />
 					</CommandBar>
 				</controls:TabbedCommandBar.PaneFooter>
@@ -69,8 +69,8 @@
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
 					</Grid.ColumnDefinitions>
-					<Button Grid.Column="0" MinWidth="150" Content="选择包" VerticalAlignment="Center" Margin="12,0,12,0" />
-					<TextBox Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
+					<Button Grid.Column="0" x:Name="QualcommButton" MinWidth="150" Content="选择包" VerticalAlignment="Center" Margin="12,0,12,0" Click="QualcommButton_OnClick" />
+					<TextBox Grid.Column="1" x:Name="QualcommTextBox" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
 				</Grid>
 				<Grid x:Name="MTKGrid" Height="144" Visibility="Collapsed">
 					<Grid.ColumnDefinitions>
