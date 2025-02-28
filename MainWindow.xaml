@@ -32,23 +32,23 @@
 				</controls:TabbedCommandBar.PaneFooter>
 				<controls:TabbedCommandBar.MenuItems>
 					<controls:TabbedCommandBarItem x:Name="TabbedCommandBarItem" Header="开始">
-						<AppBarElementContainer Margin="6,0,6,0">
+						<AppBarElementContainer>
 							<StackPanel Orientation="Horizontal">
-								<controls:Segmented SelectionMode="Single">
-									<controls:SegmentedItem Content="全部删除" ToolTipService.ToolTip="不保留数据刷机" Tag="Delete" />
-									<controls:SegmentedItem Content="保留数据" ToolTipService.ToolTip="保留数据刷机" Tag="Retain" />
-									<controls:SegmentedItem Content="删除并Lock" ToolTipService.ToolTip="不保留数据刷机并上锁" Tag="DeleteAndLock" />
-								</controls:Segmented>
+								<Button Content="加载设备" Margin="6,0,0,0" Width="80" />
+								<Button Content="刷机" Margin="12,0,0,0" Width="80" />
+								<ComboBox x:Name="DataComboBox" Margin="12,0,0,0" PlaceholderText="选择数据模式" Width="150">
+									<ComboBoxItem Content="全部删除" ToolTipService.ToolTip="不保留数据刷机" Tag="Delete" />
+									<ComboBoxItem Content="保留数据" ToolTipService.ToolTip="保留数据刷机" Tag="Retain" />
+									<ComboBoxItem Content="删除并Lock" ToolTipService.ToolTip="不保留数据刷机并上锁" Tag="DeleteAndLock" />
+								</ComboBox>
 								<ComboBox x:Name="ChooseSocComboBox" Margin="12,0,0,0" PlaceholderText="选择SOC类型" Width="150" SelectionChanged="ChooseSocComboBox_OnSelectionChanged">
-									<x:String>Qualcomm</x:String>
-									<x:String>MTK</x:String>
+									<ComboBoxItem Content="Qualcomm" ToolTipService.ToolTip="骁龙" Tag="Qualcomm" />
+									<ComboBoxItem Content="MTK" ToolTipService.ToolTip="联发科" Tag="MTK" />
 								</ComboBox>
 								<ComboBox x:Name="ChooseModeComboBox" Margin="12,0,0,0" PlaceholderText="选择刷机模式" Width="150">
 									<x:String>XiaoMi</x:String>
 									<x:String>9008</x:String>
 								</ComboBox>
-								<Button Content="加载设备" Margin="12,0,0,0" Width="80" />
-								<Button Content="刷机" Margin="12,0,0,0" Width="80" />
 							</StackPanel>
 						</AppBarElementContainer>
 					</controls:TabbedCommandBarItem>
@@ -97,12 +97,12 @@
 					<Border Margin="6,6,6,6" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource ControlCornerRadius}">
 						<Grid Padding="16,10" ColumnSpacing="16">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="75" />
-								<ColumnDefinition Width="75" />
-								<ColumnDefinition Width="100" />
-								<ColumnDefinition Width="100" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="2*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="5*" />
+								<ColumnDefinition Width="1*" />
 							</Grid.ColumnDefinitions>
 							<TextBlock Grid.Column="0" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="编号" Tag="ID" />
 							<TextBlock Grid.Column="1" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="设备" Tag="Device" />
@@ -117,12 +117,12 @@
 					<DataTemplate x:DataType="local:InventoryItem">
 						<Grid ColumnSpacing="16">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="75" />
-								<ColumnDefinition Width="75" />
-								<ColumnDefinition Width="100" />
-								<ColumnDefinition Width="100" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="2*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="5*" />
+								<ColumnDefinition Width="1*" />
 							</Grid.ColumnDefinitions>
 							<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
 							<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />

@@ -5,7 +5,6 @@ using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
 namespace App2
@@ -64,7 +63,7 @@ namespace App2
 
 		private void ChooseSocComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var selectedItem = ChooseSocComboBox.SelectedItem as string;
+			var selectedItem = (ChooseSocComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
 
 			if (selectedItem == "Qualcomm")
 			{
