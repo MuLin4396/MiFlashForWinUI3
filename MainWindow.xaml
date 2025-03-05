@@ -43,11 +43,11 @@
 								</ComboBox>
 								<ComboBox x:Name="ChooseSocComboBox" Margin="12,0,0,0" PlaceholderText="选择SOC类型" Width="150" SelectionChanged="ChooseSocComboBox_OnSelectionChanged">
 									<ComboBoxItem Content="Qualcomm" ToolTipService.ToolTip="骁龙" Tag="Qualcomm" />
-									<ComboBoxItem Content="MTK" ToolTipService.ToolTip="联发科" Tag="MTK" />
+									<ComboBoxItem Content="MTK" ToolTipService.ToolTip="联发科" Tag="MTK" IsEnabled="False" />
 								</ComboBox>
 								<ComboBox x:Name="ChooseModeComboBox" Margin="12,0,0,0" PlaceholderText="选择刷机模式" Width="150">
-									<x:String>XiaoMi</x:String>
-									<x:String>9008</x:String>
+									<ComboBoxItem Content="Fastboot" ToolTipService.ToolTip="Fastboot模式" Tag="Fastboot" />
+									<ComboBoxItem Content="9008" ToolTipService.ToolTip="9008模式" Tag="9008" IsEnabled="False" />
 								</ComboBox>
 							</StackPanel>
 						</AppBarElementContainer>
@@ -70,7 +70,7 @@
 						<ColumnDefinition Width="*" />
 					</Grid.ColumnDefinitions>
 					<Button Grid.Column="0" x:Name="QualcommButton" MinWidth="150" Content="选择包" VerticalAlignment="Center" Margin="12,0,12,0" Click="QualcommButton_OnClick" />
-					<TextBox Grid.Column="1" x:Name="QualcommTextBox" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
+					<TextBox Grid.Column="1" x:Name="QualcommTextBox" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" PlaceholderText="请选择文件路径" />
 				</Grid>
 				<Grid x:Name="MTKGrid" Height="144" Visibility="Collapsed">
 					<Grid.ColumnDefinitions>
