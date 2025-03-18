@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
+using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -10,7 +11,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using WinRT.Interop;
 
-namespace App2
+namespace MiFlashForWinUI3
 {
 	public sealed partial class MainWindow : Window
 	{
@@ -21,6 +22,11 @@ namespace App2
 			InitializeComponent();
 
 			SystemBackdrop = new MicaBackdrop { Kind = MicaKind.BaseAlt };
+
+			if (AppWindow.GetFromWindowId(Win32Interop.GetWindowIdFromWindow(WindowNative.GetWindowHandle(this))).Presenter is OverlappedPresenter overlappedPresenter)
+			{
+				overlappedPresenter.SetBorderAndTitleBar(true, false);
+			}
 
 			ExtendsContentIntoTitleBar = true;
 
@@ -78,6 +84,7 @@ namespace App2
 				QualcommGrid.Visibility = Visibility.Collapsed;
 				MTKGrid.Visibility      = Visibility.Visible;
 			}
+
 			TextBox_Clear();
 		}
 

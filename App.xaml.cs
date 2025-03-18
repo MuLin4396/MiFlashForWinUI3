@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 
-namespace App2
+namespace MiFlashForWinUI3
 {
 	public partial class App : Application
 	{
