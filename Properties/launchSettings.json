@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "App2 (Package)": {
+    "MiFlashForWinUI3 (Package)": {
       "commandName": "MsixPackage"
     },
-    "App2 (Unpackaged)": {
+    "MiFlashForWinUI3 (Unpackaged)": {
       "commandName": "Project"
     }
   }
