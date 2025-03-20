@@ -6,7 +6,6 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-	xmlns:fontIcon="using:CommunityToolkit.WinUI"
 	mc:Ignorable="d"
 	Title="MiFlashForWinUI3">
 	<Grid>
@@ -16,28 +15,44 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Grid Grid.Row="0" x:Name="AppTitleBar" Height="48">
+		<Grid Grid.Row="0" Height="48">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="144" />
 			</Grid.ColumnDefinitions>
-			<TextBlock Grid.Column="0" Style="{StaticResource CaptionTextBlockStyle}" Margin="24,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource TextFillColorPrimaryBrush}" Text="{x:Bind GetAppTitleFromSystem()}" />
-			<TextBlock Grid.Column="1" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource TextFillColorDisabledBrush}" Text="{x:Bind GetVersionForBuild()}" />
+			<Grid Grid.Column="0" x:Name="AppTitleBar">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<TextBlock Grid.Column="0" Style="{StaticResource CaptionTextBlockStyle}" Margin="24,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource TextFillColorPrimaryBrush}" Text="{x:Bind GetAppTitleFromSystem()}" />
+				<TextBlock Grid.Column="1" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource TextFillColorDisabledBrush}" Text="{x:Bind GetVersionForBuild()}" />
+			</Grid>
+			<StackPanel Grid.Column="1" Orientation="Horizontal">
+				<Button Style="{StaticResource WindowsButton}" x:Name="WindowMinimise">
+					<FontIcon Glyph="&#xE654;" FontSize="10" />
+				</Button>
+				<Button Style="{StaticResource WindowsButton}" x:Name="WindowMaximise">
+					<FontIcon Glyph="&#xE655;" FontSize="10" />
+				</Button>
+				<Button Style="{StaticResource WindowsButton}" x:Name="WindowClose">
+					<FontIcon Glyph="&#xE653;" FontSize="10" />
+				</Button>
+			</StackPanel>
 		</Grid>
 		<Grid Grid.Row="1" Margin="12,0,12,0">
 			<controls:TabbedCommandBar>
 				<controls:TabbedCommandBar.PaneFooter>
 					<CommandBar DefaultLabelPosition="Right">
-						<AppBarButton Label="设置" Icon="{fontIcon:FontIcon Glyph=&#xE713;}" />
+						<AppBarButton Label="设置" Icon="Setting" />
 					</CommandBar>
 				</controls:TabbedCommandBar.PaneFooter>
 				<controls:TabbedCommandBar.MenuItems>
 					<controls:TabbedCommandBarItem x:Name="TabbedCommandBarItem" Header="开始">
 						<AppBarElementContainer>
 							<StackPanel Orientation="Horizontal">
-								<Button Content="加载设备" Margin="6,0,0,0" Width="80" />
-								<Button Content="刷机" Margin="12,0,0,0" Width="80" />
-								<ComboBox x:Name="DataComboBox" Margin="12,0,0,0" PlaceholderText="选择数据模式" Width="150">
+								<ComboBox x:Name="DataComboBox" Margin="6,0,0,0" PlaceholderText="选择数据模式" Width="150">
 									<ComboBoxItem Content="全部删除" ToolTipService.ToolTip="不保留数据刷机" Tag="Delete" />
 									<ComboBoxItem Content="保留数据" ToolTipService.ToolTip="保留数据刷机" Tag="Retain" />
 									<ComboBoxItem Content="删除并Lock" ToolTipService.ToolTip="不保留数据刷机并上锁" Tag="DeleteAndLock" />
@@ -46,18 +61,22 @@
 									<ComboBoxItem Content="Qualcomm" ToolTipService.ToolTip="骁龙" Tag="Qualcomm" />
 									<ComboBoxItem Content="MTK" ToolTipService.ToolTip="联发科" Tag="MTK" IsEnabled="False" />
 								</ComboBox>
-								<ComboBox x:Name="ChooseModeComboBox" Margin="12,0,0,0" PlaceholderText="选择刷机模式" Width="150">
+								<ComboBox x:Name="ChooseModeComboBox" Margin="12,0,6,0" PlaceholderText="选择刷机模式" Width="150">
 									<ComboBoxItem Content="Fastboot" ToolTipService.ToolTip="Fastboot模式" Tag="Fastboot" />
 									<ComboBoxItem Content="9008" ToolTipService.ToolTip="9008模式" Tag="9008" IsEnabled="False" />
 								</ComboBox>
 							</StackPanel>
 						</AppBarElementContainer>
+						<AppBarSeparator />
+						<AppBarElementContainer>
+							<StackPanel Orientation="Horizontal">
+								<Button Content="加载设备" Margin="6,0,0,0" Width="80" Style="{StaticResource AccentButtonStyle}" />
+								<Button Content="刷机" Margin="12,0,0,0" Width="80" Style="{StaticResource AccentButtonStyle}" />
+							</StackPanel>
+						</AppBarElementContainer>
 					</controls:TabbedCommandBarItem>
 					<controls:TabbedCommandBarItem Header="登录">
 						<AppBarElementContainer>
-							<Grid>
-
-							</Grid>
 						</AppBarElementContainer>
 					</controls:TabbedCommandBarItem>
 				</controls:TabbedCommandBar.MenuItems>
@@ -93,48 +112,52 @@
 			</Grid>
 		</Border>
 		<Border Grid.Row="3" Margin="12,0,12,12" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
-			<ListView ItemsSource="{x:Bind InventoryItems}">
-				<ListView.Header>
-					<Border Margin="6,6,6,6" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource ControlCornerRadius}">
-						<Grid Padding="16,10" ColumnSpacing="16">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="1*" />
-								<ColumnDefinition Width="1*" />
-								<ColumnDefinition Width="2*" />
-								<ColumnDefinition Width="1*" />
-								<ColumnDefinition Width="5*" />
-								<ColumnDefinition Width="1*" />
-							</Grid.ColumnDefinitions>
-							<TextBlock Grid.Column="0" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="编号" Tag="ID" />
-							<TextBlock Grid.Column="1" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="设备" Tag="Device" />
-							<TextBlock Grid.Column="2" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="进度" Tag="Load" />
-							<TextBlock Grid.Column="3" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="时间" Tag="Time" />
-							<TextBlock Grid.Column="4" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="状态" Tag="State" />
-							<TextBlock Grid.Column="5" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="结果" Tag="Results" />
-						</Grid>
-					</Border>
-				</ListView.Header>
-				<ListView.ItemTemplate>
-					<DataTemplate x:DataType="local:InventoryItem">
-						<Grid ColumnSpacing="16">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="1*" />
-								<ColumnDefinition Width="1*" />
-								<ColumnDefinition Width="2*" />
-								<ColumnDefinition Width="1*" />
-								<ColumnDefinition Width="5*" />
-								<ColumnDefinition Width="1*" />
-							</Grid.ColumnDefinitions>
-							<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
-							<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />
-							<ProgressBar Grid.Column="2" Width="80" Value="{x:Bind Load}" />
-							<TextBlock Grid.Column="3" TextAlignment="Center" Text="{x:Bind Time}" />
-							<TextBlock Grid.Column="4" TextAlignment="Center" Text="{x:Bind State}" />
-							<TextBlock Grid.Column="5" TextAlignment="Center" Text="{x:Bind Results}" />
-						</Grid>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+				<Border Grid.Row="0" Margin="6,6,6,6" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource ControlCornerRadius}">
+					<Grid Padding="16,10" ColumnSpacing="16">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="5*" />
+							<ColumnDefinition Width="1*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="编号" Tag="ID" />
+						<TextBlock Grid.Column="1" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="设备" Tag="Device" />
+						<TextBlock Grid.Column="2" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="进度" Tag="Load" />
+						<TextBlock Grid.Column="3" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="时间" Tag="Time" />
+						<TextBlock Grid.Column="4" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="状态" Tag="State" />
+						<TextBlock Grid.Column="5" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="结果" Tag="Results" />
+					</Grid>
+				</Border>
+				<ListView Grid.Row="1" Margin="3,0,3,0" ItemsSource="{x:Bind InventoryItems}">
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="local:InventoryItem">
+							<Grid ColumnSpacing="16">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="1*" />
+									<ColumnDefinition Width="1*" />
+									<ColumnDefinition Width="2*" />
+									<ColumnDefinition Width="1*" />
+									<ColumnDefinition Width="5*" />
+									<ColumnDefinition Width="1*" />
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
+								<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />
+								<ProgressBar Grid.Column="2" Width="80" Value="{x:Bind Load}" />
+								<TextBlock Grid.Column="3" TextAlignment="Center" Text="{x:Bind Time}" />
+								<TextBlock Grid.Column="4" TextAlignment="Center" Text="{x:Bind State}" />
+								<TextBlock Grid.Column="5" TextAlignment="Center" Text="{x:Bind Results}" />
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Grid>
 		</Border>
 	</Grid>
 </Window>

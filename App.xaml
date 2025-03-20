@@ -10,6 +10,13 @@
 				<XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
 				<controls:XamlControlsResources xmlns="using:CommunityToolkit.WinUI.Controls" />
 			</ResourceDictionary.MergedDictionaries>
+			<Style x:Key="WindowsButton" TargetType="Button">
+				<Setter Property="Width" Value="48" />
+				<Setter Property="Height" Value="48" />
+				<Setter Property="CornerRadius" Value="0" />
+				<Setter Property="Background" Value="Transparent" />
+				<Setter Property="BorderBrush" Value="Transparent" />
+			</Style>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>
