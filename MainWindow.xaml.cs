@@ -17,16 +17,21 @@ namespace MiFlashForWinUI3
 	{
 		public ObservableCollection<InventoryItem> InventoryItems { get; set; }
 
+		private AppWindow appWindow;
+
+		private OverlappedPresenter overlappedPresenter;
+
 		public MainWindow()
 		{
 			InitializeComponent();
 
 			SystemBackdrop = new MicaBackdrop { Kind = MicaKind.BaseAlt };
 
-			if (AppWindow.GetFromWindowId(Win32Interop.GetWindowIdFromWindow(WindowNative.GetWindowHandle(this))).Presenter is OverlappedPresenter overlappedPresenter)
-			{
-				overlappedPresenter.SetBorderAndTitleBar(true, false);
-			}
+			appWindow = AppWindow.GetFromWindowId(Win32Interop.GetWindowIdFromWindow(WindowNative.GetWindowHandle(this)));
+
+			overlappedPresenter = (OverlappedPresenter)appWindow.Presenter;
+
+			overlappedPresenter.SetBorderAndTitleBar(true, false);
 
 			ExtendsContentIntoTitleBar = true;
 
@@ -37,20 +42,16 @@ namespace MiFlashForWinUI3
 			InventoryItems = new ObservableCollection<InventoryItem>(GenerateInitialInventoryItems());
 		}
 
-		private IEnumerable<InventoryItem> GenerateInitialInventoryItems()
+		private static IEnumerable<InventoryItem> GenerateInitialInventoryItems()
 		{
-			return new[]
-			{
+			return
+			[
 				new InventoryItem
 				{
-					ID      = "114514abc",
-					Device  = "Xiaomi 15",
-					Load    = 30,
-					Time    = "66s",
-					State   = "flash img",
-					Results = "刷机中",
+					ID    = "114514abc", Device  = "Xiaomi 15", Load = 30, Time = "66s",
+					State = "flash img", Results = "刷机中",
 				}
-			};
+			];
 		}
 
 		private string GetAppTitleFromSystem()
@@ -152,6 +153,28 @@ namespace MiFlashForWinUI3
 		{
 			QualcommTextBox.Text = string.Empty;
 			// TextBox.Text         = string.Empty;
+		}
+
+		private void WindowsButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			Button? senderButton = sender as Button;
+			string? Tag          = senderButton.Tag as string;
+
+			if (Tag == "WindowClose") Close();
+			else if (Tag == "WindowMinimise") overlappedPresenter.Minimize();
+			else if (Tag == "WindowMaximise")
+			{
+				if (overlappedPresenter.State == OverlappedPresenterState.Restored)
+				{
+					WindowMaximiseIcon.Glyph = "\uE656";
+					overlappedPresenter.Maximize();
+				}
+				else if (overlappedPresenter.State == OverlappedPresenterState.Maximized)
+				{
+					WindowMaximiseIcon.Glyph = "\uE655";
+					overlappedPresenter.Restore();
+				}
+			}
 		}
 	}
 

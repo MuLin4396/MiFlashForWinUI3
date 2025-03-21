@@ -30,13 +30,13 @@
 				<TextBlock Grid.Column="1" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource TextFillColorDisabledBrush}" Text="{x:Bind GetVersionForBuild()}" />
 			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal">
-				<Button Style="{StaticResource WindowsButton}" x:Name="WindowMinimise">
+				<Button Style="{StaticResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMinimise">
 					<FontIcon Glyph="&#xE654;" FontSize="10" />
 				</Button>
-				<Button Style="{StaticResource WindowsButton}" x:Name="WindowMaximise">
-					<FontIcon Glyph="&#xE655;" FontSize="10" />
+				<Button Style="{StaticResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMaximise">
+					<FontIcon Glyph="&#xE655;" FontSize="10" x:Name="WindowMaximiseIcon" />
 				</Button>
-				<Button Style="{StaticResource WindowsButton}" x:Name="WindowClose">
+				<Button Style="{StaticResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowClose">
 					<FontIcon Glyph="&#xE653;" FontSize="10" />
 				</Button>
 			</StackPanel>
