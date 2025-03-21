@@ -35,11 +35,28 @@ namespace MiFlashForWinUI3
 
 			ExtendsContentIntoTitleBar = true;
 
-			AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
-
 			SetTitleBar(AppTitleBar);
 
 			InventoryItems = new ObservableCollection<InventoryItem>(GenerateInitialInventoryItems());
+
+			appWindow.Changed += AppWindow_Changed;
+		}
+
+		private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
+		{
+			switch (overlappedPresenter.State)
+			{
+				case OverlappedPresenterState.Maximized:
+					WindowMaximiseIcon.Glyph = "\uE656";
+					break;
+				case OverlappedPresenterState.Minimized:
+					break;
+				case OverlappedPresenterState.Restored:
+					WindowMaximiseIcon.Glyph = "\uE655";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 
 		private static IEnumerable<InventoryItem> GenerateInitialInventoryItems()
@@ -163,18 +180,9 @@ namespace MiFlashForWinUI3
 			if (Tag == "WindowClose") Close();
 			else if (Tag == "WindowMinimise") overlappedPresenter.Minimize();
 			else if (Tag == "WindowMaximise")
-			{
-				if (overlappedPresenter.State == OverlappedPresenterState.Restored)
-				{
-					WindowMaximiseIcon.Glyph = "\uE656";
-					overlappedPresenter.Maximize();
-				}
-				else if (overlappedPresenter.State == OverlappedPresenterState.Maximized)
-				{
-					WindowMaximiseIcon.Glyph = "\uE655";
-					overlappedPresenter.Restore();
-				}
-			}
+
+				if (overlappedPresenter.State == OverlappedPresenterState.Restored) overlappedPresenter.Maximize();
+				else if (overlappedPresenter.State == OverlappedPresenterState.Maximized) overlappedPresenter.Restore();
 		}
 	}
 
