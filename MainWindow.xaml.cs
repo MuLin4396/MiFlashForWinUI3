@@ -37,7 +37,7 @@ namespace MiFlashForWinUI3
 
 			SetTitleBar(AppTitleBar);
 
-			InventoryItems = new ObservableCollection<InventoryItem>(GenerateInitialInventoryItems());
+			// InventoryItems = new ObservableCollection<InventoryItem>(GenerateInitialInventoryItems());
 
 			appWindow.Changed += AppWindow_Changed;
 		}
@@ -57,18 +57,6 @@ namespace MiFlashForWinUI3
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-		}
-
-		private static IEnumerable<InventoryItem> GenerateInitialInventoryItems()
-		{
-			return
-			[
-				new InventoryItem
-				{
-					ID    = "114514abc", Device  = "Xiaomi 15", Load = 30, Time = "66s",
-					State = "flash img", Results = "刷机中",
-				}
-			];
 		}
 
 		private string GetAppTitleFromSystem()
@@ -103,7 +91,7 @@ namespace MiFlashForWinUI3
 				MTKGrid.Visibility      = Visibility.Visible;
 			}
 
-			TextBox_Clear();
+			QualcommTextBox.Text = string.Empty;
 		}
 
 		private async void QualcommButton_OnClick(object sender, RoutedEventArgs e)
@@ -132,46 +120,38 @@ namespace MiFlashForWinUI3
 			QualcommButton.IsEnabled = true;
 		}
 
-		//todo 暂时搁置
-		private async void MTKButton_OnClick(object sender, RoutedEventArgs e)
-		{
-			var senderButton = sender as Button;
-			senderButton.IsEnabled = false;
-
-			var openPicker = new FileOpenPicker();
-			var hWnd       = WindowNative.GetWindowHandle(new MainWindow());
-
-			InitializeWithWindow.Initialize(openPicker, hWnd);
-
-			openPicker.ViewMode               = PickerViewMode.Thumbnail;
-			openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-
-			openPicker.FileTypeFilter.Add((string)senderButton.Tag);
-
-			var file = await openPicker.PickSingleFileAsync();
-
-			if (file != null)
-			{
-				if (senderButton.Tag.ToString() == "img")
-				{
-					// TextBox.Text = folder.Path;
-				}
-			}
-			else
-			{
-				// TextBox.Text = "未选择文件";
-			}
-
-			senderButton.IsEnabled = true;
-		}
-
-		//todo 暂时搁置
-		private void TextBox_Clear()
-		{
-			QualcommTextBox.Text = string.Empty;
-			// TextBox.Text         = string.Empty;
-		}
-
+		/// Tip 联发科
+		// private async void MTKButton_OnClick(object sender, RoutedEventArgs e)
+		// {
+		// 	var senderButton = sender as Button;
+		// 	senderButton.IsEnabled = false;
+		//
+		// 	var openPicker = new FileOpenPicker();
+		// 	var hWnd       = WindowNative.GetWindowHandle(new MainWindow());
+		//
+		// 	InitializeWithWindow.Initialize(openPicker, hWnd);
+		//
+		// 	openPicker.ViewMode               = PickerViewMode.Thumbnail;
+		// 	openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+		//
+		// 	openPicker.FileTypeFilter.Add((string)senderButton.Tag);
+		//
+		// 	var file = await openPicker.PickSingleFileAsync();
+		//
+		// 	if (file != null)
+		// 	{
+		// 		if (senderButton.Tag.ToString() == "img")
+		// 		{
+		// 			// TextBox.Text = folder.Path;
+		// 		}
+		// 	}
+		// 	else
+		// 	{
+		// 		// TextBox.Text = "未选择文件";
+		// 	}
+		//
+		// 	senderButton.IsEnabled = true;
+		// }
 		private void WindowsButton_OnClick(object sender, RoutedEventArgs e)
 		{
 			Button? senderButton = sender as Button;
@@ -180,7 +160,6 @@ namespace MiFlashForWinUI3
 			if (Tag == "WindowClose") Close();
 			else if (Tag == "WindowMinimise") overlappedPresenter.Minimize();
 			else if (Tag == "WindowMaximise")
-
 				if (overlappedPresenter.State == OverlappedPresenterState.Restored) overlappedPresenter.Maximize();
 				else if (overlappedPresenter.State == OverlappedPresenterState.Maximized) overlappedPresenter.Restore();
 		}
