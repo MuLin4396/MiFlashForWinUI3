@@ -70,7 +70,7 @@
 						<AppBarSeparator />
 						<AppBarElementContainer>
 							<StackPanel Orientation="Horizontal">
-								<Button Content="加载设备" Margin="6,0,0,0" Width="80" Style="{StaticResource AccentButtonStyle}" />
+								<Button Content="加载设备" Margin="6,0,0,0" Width="80" Style="{StaticResource AccentButtonStyle}" Click="AddInventoryItem" />
 								<Button Content="刷机" Margin="12,0,0,0" Width="80" Style="{StaticResource AccentButtonStyle}" />
 							</StackPanel>
 						</AppBarElementContainer>
@@ -149,8 +149,15 @@
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
 								<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />
-								<ProgressBar Grid.Column="2" Width="80" Value="{x:Bind Load}" />
-								<TextBlock Grid.Column="3" TextAlignment="Center" Text="{x:Bind Time}" />
+								<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+									<ProgressBar Width="80" Value="{x:Bind Load}" Margin="0,0,12,0" />
+									<TextBlock FontStyle="Italic" Text="{x:Bind Load}" />
+									<TextBlock FontStyle="Italic" Text="%" />
+								</StackPanel>
+								<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
+									<TextBlock FontStyle="Italic" TextAlignment="Center" Text="{x:Bind Time}" />
+									<TextBlock FontStyle="Italic" Text="S" />
+								</StackPanel>
 								<TextBlock Grid.Column="4" TextAlignment="Center" Text="{x:Bind State}" />
 								<TextBlock Grid.Column="5" TextAlignment="Center" Text="{x:Bind Results}" />
 							</Grid>

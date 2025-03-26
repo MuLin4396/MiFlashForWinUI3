@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
@@ -25,6 +24,8 @@ namespace MiFlashForWinUI3
 		{
 			InitializeComponent();
 
+			InventoryItems = new ObservableCollection<InventoryItem>();
+
 			SystemBackdrop = new MicaBackdrop { Kind = MicaKind.BaseAlt };
 
 			appWindow = AppWindow.GetFromWindowId(Win32Interop.GetWindowIdFromWindow(WindowNative.GetWindowHandle(this)));
@@ -37,26 +38,25 @@ namespace MiFlashForWinUI3
 
 			SetTitleBar(AppTitleBar);
 
-			// InventoryItems = new ObservableCollection<InventoryItem>(GenerateInitialInventoryItems());
-
 			appWindow.Changed += AppWindow_Changed;
 		}
 
 		private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
 		{
-			switch (overlappedPresenter.State)
-			{
-				case OverlappedPresenterState.Maximized:
-					WindowMaximiseIcon.Glyph = "\uE656";
-					break;
-				case OverlappedPresenterState.Minimized:
-					break;
-				case OverlappedPresenterState.Restored:
-					WindowMaximiseIcon.Glyph = "\uE655";
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+			if (overlappedPresenter.State is OverlappedPresenterState.Maximized) WindowMaximiseIcon.Glyph     = "\uE656";
+			else if (overlappedPresenter.State is OverlappedPresenterState.Restored) WindowMaximiseIcon.Glyph = "\uE655";
+		}
+
+		private void WindowsButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			Button? senderButton = sender as Button;
+			string? Tag          = senderButton.Tag as string;
+
+			if (Tag == "WindowClose") Close();
+			else if (Tag == "WindowMinimise") overlappedPresenter.Minimize();
+			else if (Tag == "WindowMaximise")
+				if (overlappedPresenter.State == OverlappedPresenterState.Restored) overlappedPresenter.Maximize();
+				else if (overlappedPresenter.State == OverlappedPresenterState.Maximized) overlappedPresenter.Restore();
 		}
 
 		private string GetAppTitleFromSystem()
@@ -120,6 +120,19 @@ namespace MiFlashForWinUI3
 			QualcommButton.IsEnabled = true;
 		}
 
+		public void AddInventoryItem(object sender, RoutedEventArgs e)
+		{
+			var a = new Random();
+
+			var newItem = new InventoryItem
+			{
+				ID    = "2ad", Device    = "device", Load = a.Next(1, 100), Time = "45",
+				State = "state", Results = "results"
+			};
+
+			InventoryItems.Add(newItem);
+		}
+
 		/// Tip 联发科
 		// private async void MTKButton_OnClick(object sender, RoutedEventArgs e)
 		// {
@@ -152,17 +165,6 @@ namespace MiFlashForWinUI3
 		//
 		// 	senderButton.IsEnabled = true;
 		// }
-		private void WindowsButton_OnClick(object sender, RoutedEventArgs e)
-		{
-			Button? senderButton = sender as Button;
-			string? Tag          = senderButton.Tag as string;
-
-			if (Tag == "WindowClose") Close();
-			else if (Tag == "WindowMinimise") overlappedPresenter.Minimize();
-			else if (Tag == "WindowMaximise")
-				if (overlappedPresenter.State == OverlappedPresenterState.Restored) overlappedPresenter.Maximize();
-				else if (overlappedPresenter.State == OverlappedPresenterState.Maximized) overlappedPresenter.Restore();
-		}
 	}
 
 	public class InventoryItem
