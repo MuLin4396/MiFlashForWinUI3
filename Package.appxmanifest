@@ -10,7 +10,7 @@
   <Identity
     Name="5975e4e6-d8a4-41ca-8ea6-0768bce19086"
     Publisher="CN=SHMing"
-    Version="1.2.1.0" />
+    Version="1.3.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="5975e4e6-d8a4-41ca-8ea6-0768bce19086" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

@@ -26,17 +26,17 @@
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
-				<TextBlock Grid.Column="0" Style="{StaticResource CaptionTextBlockStyle}" Margin="24,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource TextFillColorPrimaryBrush}" Text="{x:Bind GetAppTitleFromSystem()}" />
-				<TextBlock Grid.Column="1" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource TextFillColorDisabledBrush}" Text="{x:Bind GetVersionForBuild()}" />
+				<TextBlock Grid.Column="0" Style="{ThemeResource CaptionTextBlockStyle}" Margin="24,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{x:Bind GetAppTitleFromSystem()}" />
+				<TextBlock Grid.Column="1" Style="{ThemeResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorDisabledBrush}" Text="{x:Bind GetVersionForBuild()}" />
 			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal">
-				<Button Style="{StaticResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMinimise">
+				<Button Style="{ThemeResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMinimise">
 					<FontIcon Glyph="&#xE654;" FontSize="10" />
 				</Button>
-				<Button Style="{StaticResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMaximise">
+				<Button Style="{ThemeResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMaximise">
 					<FontIcon Glyph="&#xE655;" FontSize="10" x:Name="WindowMaximiseIcon" />
 				</Button>
-				<Button Style="{StaticResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowClose">
+				<Button Style="{ThemeResource WindowsButtonClose}" Click="WindowsButton_OnClick" Tag="WindowClose">
 					<FontIcon Glyph="&#xE653;" FontSize="10" />
 				</Button>
 			</StackPanel>
@@ -70,8 +70,8 @@
 						<AppBarSeparator />
 						<AppBarElementContainer>
 							<StackPanel Orientation="Horizontal">
-								<Button Content="加载设备" Margin="6,0,0,0" Width="80" Style="{StaticResource AccentButtonStyle}" Click="AddInventoryItem" />
-								<Button Content="刷机" Margin="12,0,0,0" Width="80" Style="{StaticResource AccentButtonStyle}" />
+								<Button Content="加载设备" Margin="6,0,0,0" Width="80" Style="{ThemeResource AccentButtonStyle}" Click="AddInventoryItem" />
+								<Button Content="刷机" Margin="12,0,0,0" Width="80" Style="{ThemeResource AccentButtonStyle}" />
 							</StackPanel>
 						</AppBarElementContainer>
 					</controls:TabbedCommandBarItem>
