@@ -18,7 +18,7 @@
 		<Grid Grid.Row="0" Height="48">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="144" />
+				<ColumnDefinition Width="192" />
 			</Grid.ColumnDefinitions>
 			<Grid Grid.Column="0" x:Name="AppTitleBar">
 				<Grid.ColumnDefinitions>
@@ -30,6 +30,9 @@
 				<TextBlock Grid.Column="1" Style="{ThemeResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorDisabledBrush}" Text="{x:Bind GetVersionForBuild()}" />
 			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal">
+				<Button Style="{ThemeResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowTaskbar">
+					<FontIcon Glyph="&#xF08E;" FontSize="10" />
+				</Button>
 				<Button Style="{ThemeResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMinimise">
 					<FontIcon Glyph="&#xE654;" FontSize="10" />
 				</Button>

@@ -52,7 +52,8 @@ namespace MiFlashForWinUI3
 			Button? senderButton = sender as Button;
 			string? Tag          = senderButton.Tag as string;
 
-			if (Tag == "WindowClose") Close();
+			if (Tag == "WindowTaskbar") Close();
+			else if (Tag == "WindowClose") Close();
 			else if (Tag == "WindowMinimise") overlappedPresenter.Minimize();
 			else if (Tag == "WindowMaximise")
 				if (overlappedPresenter.State == OverlappedPresenterState.Restored) overlappedPresenter.Maximize();
