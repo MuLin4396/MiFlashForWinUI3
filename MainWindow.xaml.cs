@@ -1,24 +1,38 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
-using Windows.Storage.Pickers;
+using Windows.Graphics.Display;
 using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.Windows.Storage.Pickers;
+using MiFlashForWinUI3.Helper;
 using WinRT.Interop;
 
 namespace MiFlashForWinUI3
 {
-	public sealed partial class MainWindow : Window
+	public sealed partial class MainWindow
 	{
+		private const int MainWindowMinWidth = 800;
+
+		private const int MainWindowMinHeight = 450;
+
+		private const int DPI = 96;
+
 		public ObservableCollection<InventoryItem> InventoryItems { get; set; }
 
-		private AppWindow appWindow;
+		private readonly MainWindow _current;
 
-		private OverlappedPresenter overlappedPresenter;
+		private readonly AppWindow _appWindow;
+
+		private readonly OverlappedPresenter _overlappedPresenter;
+
+		private string _romUrl = "";
 
 		public MainWindow()
 		{
@@ -28,23 +42,42 @@ namespace MiFlashForWinUI3
 
 			SystemBackdrop = new MicaBackdrop { Kind = MicaKind.BaseAlt };
 
-			appWindow = AppWindow.GetFromWindowId(Win32Interop.GetWindowIdFromWindow(WindowNative.GetWindowHandle(this)));
+			_appWindow = AppWindow.GetFromWindowId(Win32Interop.GetWindowIdFromWindow(WindowNative.GetWindowHandle(this)));
 
-			overlappedPresenter = (OverlappedPresenter)appWindow.Presenter;
+			_overlappedPresenter = (OverlappedPresenter)_appWindow.Presenter;
 
-			overlappedPresenter.SetBorderAndTitleBar(true, false);
+			_overlappedPresenter.SetBorderAndTitleBar(true, false);
 
 			ExtendsContentIntoTitleBar = true;
 
 			SetTitleBar(AppTitleBar);
 
-			appWindow.Changed += AppWindow_Changed;
+			_current = this;
+
+			_appWindow.Changed += AppWindow_Changed;
 		}
 
 		private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
 		{
-			if (overlappedPresenter.State is OverlappedPresenterState.Maximized) WindowMaximiseIcon.Glyph     = "\uE656";
-			else if (overlappedPresenter.State is OverlappedPresenterState.Restored) WindowMaximiseIcon.Glyph = "\uE655";
+			if (_overlappedPresenter.State is OverlappedPresenterState.Maximized) WindowMaximiseIcon.Glyph     = "\uE656";
+			else if (_overlappedPresenter.State is OverlappedPresenterState.Restored) WindowMaximiseIcon.Glyph = "\uE655";
+
+			int x = ScreenDPIHelper.DpiX;
+
+			int MinWidth  = (MainWindowMinWidth * x) / DPI;
+			int MinHeight = (MainWindowMinHeight * x) / DPI;
+
+			TextBlock11111.Text = ($"设定窗口最小分辨率: {MainWindowMinWidth} x {MainWindowMinHeight}\n" + $"实际窗口最小分辨率: {MinWidth} x {MinHeight}\n" + $"工作区域分辨率: {ScreenDPIHelper.WorkingArea.Width} x {ScreenDPIHelper.WorkingArea.Height}\n" + $"桌面分辨率: {ScreenDPIHelper.DesktopResolution.Width} x {ScreenDPIHelper.DesktopResolution.Height}\n" + $"X轴DPI: {ScreenDPIHelper.DpiX}\n" + $"Y轴DPI: {ScreenDPIHelper.DpiY}\n" + $"X轴缩放比例: {ScreenDPIHelper.ScaleX:F2}\n" + $"Y轴缩放比例: {ScreenDPIHelper.ScaleY:F2}");
+
+			SetWindowMaxMin(MinWidth, MinHeight);
+		}
+
+		private void ShowDpiInfo(object sender, RoutedEventArgs e)
+		{
+			var    displayInfo = DisplayInformation.GetForCurrentView();
+			double dpi         = displayInfo.RawDpiX;
+
+			TextBlock11111.Text = $"DPI: {dpi}\n缩放: scale:P0";
 		}
 
 		private void WindowsButton_OnClick(object sender, RoutedEventArgs e)
@@ -52,12 +85,17 @@ namespace MiFlashForWinUI3
 			Button? senderButton = sender as Button;
 			string? Tag          = senderButton.Tag as string;
 
-			if (Tag == "WindowTaskbar") Close();
-			else if (Tag == "WindowClose") Close();
-			else if (Tag == "WindowMinimise") overlappedPresenter.Minimize();
-			else if (Tag == "WindowMaximise")
-				if (overlappedPresenter.State == OverlappedPresenterState.Restored) overlappedPresenter.Maximize();
-				else if (overlappedPresenter.State == OverlappedPresenterState.Maximized) overlappedPresenter.Restore();
+			switch (Tag)
+			{
+				// case "WindowTaskbar":
+				case "WindowClose": Close(); break;
+				case "WindowMinimise": _overlappedPresenter.Minimize(); break;
+				case "WindowMaximise" when _overlappedPresenter.State == OverlappedPresenterState.Restored: _overlappedPresenter.Maximize(); break;
+				case "WindowMaximise" when _overlappedPresenter.State == OverlappedPresenterState.Maximized: _overlappedPresenter.Restore(); break;
+				case "WindowTheme":
+					if (_current.Content is FrameworkElement rootElement) rootElement.RequestedTheme = (rootElement.ActualTheme == ElementTheme.Light ? ElementTheme.Dark : ElementTheme.Light);
+					break;
+			}
 		}
 
 		private string GetAppTitleFromSystem()
@@ -77,104 +115,153 @@ namespace MiFlashForWinUI3
 			return $"{name} · {build}";
 		}
 
-		private void ChooseSocComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void SetWindowMaxMin(int minWidth = 0, int minHeight = 0, int maxWidth = 0, int maxHeight = 0)
 		{
-			var selectedItem = (ChooseSocComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
-
-			if (selectedItem == "Qualcomm")
-			{
-				QualcommGrid.Visibility = Visibility.Visible;
-				MTKGrid.Visibility      = Visibility.Collapsed;
-			}
-			else if (selectedItem == "MTK")
-			{
-				QualcommGrid.Visibility = Visibility.Collapsed;
-				MTKGrid.Visibility      = Visibility.Visible;
-			}
-
-			QualcommTextBox.Text = string.Empty;
+			_overlappedPresenter.PreferredMinimumWidth  = minWidth != 0 ? minWidth : _overlappedPresenter.PreferredMinimumWidth;
+			_overlappedPresenter.PreferredMinimumHeight = minHeight != 0 ? minHeight : _overlappedPresenter.PreferredMinimumHeight;
+			_overlappedPresenter.PreferredMaximumWidth  = maxWidth != 0 ? maxWidth : _overlappedPresenter.PreferredMaximumWidth;
+			_overlappedPresenter.PreferredMaximumHeight = maxHeight != 0 ? maxHeight : _overlappedPresenter.PreferredMaximumHeight;
 		}
 
-		private async void QualcommButton_OnClick(object sender, RoutedEventArgs e)
-		{
-			QualcommButton.IsEnabled = false;
-
-			var openPicker = new FolderPicker();
-			var hWnd       = WindowNative.GetWindowHandle(new MainWindow());
-
-			InitializeWithWindow.Initialize(openPicker, hWnd);
-
-			openPicker.ViewMode               = PickerViewMode.Thumbnail;
-			openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-
-			var folder = await openPicker.PickSingleFolderAsync();
-
-			if (folder != null)
-			{
-				QualcommTextBox.Text = folder.Path;
-			}
-			else
-			{
-				QualcommTextBox.Text = "未选择文件";
-			}
-
-			QualcommButton.IsEnabled = true;
-		}
-
-		public void AddInventoryItem(object sender, RoutedEventArgs e)
+		private void AddInventoryItem(object sender, RoutedEventArgs e)
 		{
 			var a = new Random();
 
-			var newItem = new InventoryItem
-			{
-				ID    = "2ad", Device    = "device", Load = a.Next(1, 100), Time = "45",
-				State = "state", Results = "results"
-			};
+			var newItem = new InventoryItem { ID = $"{InventoryItems.Count + 1}", Device = "8fd7d29", Load = a.Next(1, 100), Time = "45", State = "state" };
+			// , Results = "results" 
 
 			InventoryItems.Add(newItem);
 		}
 
-		/// Tip 联发科
-		// private async void MTKButton_OnClick(object sender, RoutedEventArgs e)
-		// {
-		// 	var senderButton = sender as Button;
-		// 	senderButton.IsEnabled = false;
-		//
-		// 	var openPicker = new FileOpenPicker();
-		// 	var hWnd       = WindowNative.GetWindowHandle(new MainWindow());
-		//
-		// 	InitializeWithWindow.Initialize(openPicker, hWnd);
-		//
-		// 	openPicker.ViewMode               = PickerViewMode.Thumbnail;
-		// 	openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-		//
-		// 	openPicker.FileTypeFilter.Add((string)senderButton.Tag);
-		//
-		// 	var file = await openPicker.PickSingleFileAsync();
-		//
-		// 	if (file != null)
-		// 	{
-		// 		if (senderButton.Tag.ToString() == "img")
-		// 		{
-		// 			// TextBox.Text = folder.Path;
-		// 		}
-		// 	}
-		// 	else
-		// 	{
-		// 		// TextBox.Text = "未选择文件";
-		// 	}
-		//
-		// 	senderButton.IsEnabled = true;
-		// }
+		private void delInventoryItem2(object sender, RoutedEventArgs e)
+		{
+			InventoryItems.Clear();
+		}
+
+		private async void TextClear(object sender, RoutedEventArgs e)
+		{
+			await TextClear1();
+
+			string a = "Clear End";
+
+			await TextWrite1(a);
+		}
+
+		private async void TextWrite(object sender, RoutedEventArgs e)
+		{
+			await TextClear1();
+
+			string a = "Awdadwad\nAwadwa\n\tAdawdwd";
+
+			await TextWrite1(a);
+		}
+
+		private async Task TextClear1()
+		{
+			// 检查文本是否为空
+			while (!string.IsNullOrEmpty(TextBlock11111.Text))
+			{
+				// 逐字删除（从右向左删除最后一个字符）
+				TextBlock11111.Text = TextBlock11111.Text.Substring(0, TextBlock11111.Text.Length - 1);
+				await Task.Delay(10);
+			}
+		}
+
+		private async Task TextWrite1(string text)
+		{
+			string        a           = text;
+			StringBuilder currentText = new StringBuilder();
+
+			for (int i = 0; i < a.Length; i++)
+			{
+				currentText.Append(a[i]);
+				TextBlock11111.Text = currentText.ToString();
+				await Task.Delay(10);
+			}
+		}
+
+		private void MyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (ComboBoxmode.SelectedItem is ComboBoxItem selectedItem) SettingsCardMode.Description = "Bat: " + selectedItem.Tag?.ToString() ?? string.Empty;
+		}
+
+		private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+		{
+			aButton.IsEnabled = false;
+
+			var picker = new FolderPicker(aButton.XamlRoot.ContentIslandEnvironment.AppWindowId);
+
+			picker.CommitButtonText       = "选择文件";
+			picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+			picker.ViewMode               = PickerViewMode.List;
+
+			var folder = await picker.PickSingleFolderAsync();
+
+			if (folder != null)
+			{
+				SettingsCard111.Description = "Picked: " + folder.Path;
+
+				_romUrl = folder.Path;
+
+				aButton.Visibility = Visibility.Collapsed;
+				bButton.IsEnabled  = true;
+				bButton.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				_romUrl = "";
+
+				SettingsCard111.Description = "选择包地址啊";
+
+				aButton.IsEnabled = true;
+			}
+
+			// SettingsCard111.Description = folder != null ? "Picked: " + folder.Path : "选择包地址啊";
+		}
+
+		private void BButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			ClearRomUrl();
+		}
+
+		private void ClearRomUrl()
+		{
+			aButton.IsEnabled  = true;
+			aButton.Visibility = Visibility.Visible;
+
+			bButton.IsEnabled  = false;
+			bButton.Visibility = Visibility.Collapsed;
+
+			SettingsCard111.Description = "选择包地址啊";
+		}
+
+		private void ClearFlashMode()
+		{
+			SettingsCardMode.Description       = "选择一下啊";
+			ComboBoxmode.SelectedIndex         = -1;
+			SettingsCardQualcomm.SelectedIndex = -1;
+		}
+
+		private void MenuFlyoutItem_OnClick(object sender, RoutedEventArgs e)
+		{
+			ClearFlashMode();
+			ClearRomUrl();
+		}
+
+		private void MenuFlyoutItem1_OnClick(object sender, RoutedEventArgs e)
+		{
+			Border11.Visibility = Border11.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+		}
 	}
 
 	public class InventoryItem
 	{
-		public string ID      { get; set; } = string.Empty;
-		public string Device  { get; set; } = string.Empty;
-		public int    Load    { get; set; }
-		public string Time    { get; set; } = string.Empty;
-		public string State   { get; set; } = string.Empty;
-		public string Results { get; set; } = string.Empty;
+		public string ID     { get; set; } = string.Empty;
+		public string Device { get; set; } = string.Empty;
+		public int    Load   { get; set; }
+		public string Time   { get; set; } = string.Empty;
+
+		public string State { get; set; } = string.Empty;
+		// public string Results { get; set; } = string.Empty;
 	}
 }

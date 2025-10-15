@@ -5,33 +5,55 @@
 	xmlns:local="using:MiFlashForWinUI3"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+	xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
 	mc:Ignorable="d"
 	Title="MiFlashForWinUI3">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Grid Grid.Row="0" Height="48">
 			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="192" />
 			</Grid.ColumnDefinitions>
-			<Grid Grid.Column="0" x:Name="AppTitleBar">
+			<StackPanel Grid.Column="0" x:Name="NavigationViewButton" Orientation="Horizontal" Margin="8,6,8,6">
+				<Button x:Name="NavigationBackButton" Visibility="Visible" Width="36" Height="36" Background="Transparent" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}">
+					<AnimatedIcon>
+						<AnimatedIcon.Source>
+							<animatedvisuals:AnimatedBackVisualSource />
+						</AnimatedIcon.Source>
+					</AnimatedIcon>
+				</Button>
+				<Button x:Name="NavigationGlobalButton" Visibility="Visible" Width="36" Height="36" Background="Transparent" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}">
+					<AnimatedIcon>
+						<AnimatedIcon.Source>
+							<animatedvisuals:AnimatedGlobalNavigationButtonVisualSource />
+						</AnimatedIcon.Source>
+					</AnimatedIcon>
+				</Button>
+				<Button x:Name="NavigationSettButton" Visibility="Visible" Width="36" Height="36" Background="Transparent" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}">
+					<AnimatedIcon>
+						<AnimatedIcon.Source>
+							<animatedvisuals:AnimatedSettingsVisualSource />
+						</AnimatedIcon.Source>
+					</AnimatedIcon>
+				</Button>
+			</StackPanel>
+			<Grid Grid.Column="1" x:Name="AppTitleBar">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
-				<TextBlock Grid.Column="0" Style="{ThemeResource CaptionTextBlockStyle}" Margin="24,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{x:Bind GetAppTitleFromSystem()}" />
+				<TextBlock Grid.Column="0" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{x:Bind GetAppTitleFromSystem()}" />
 				<TextBlock Grid.Column="1" Style="{ThemeResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorDisabledBrush}" Text="{x:Bind GetVersionForBuild()}" />
 			</Grid>
-			<StackPanel Grid.Column="1" Orientation="Horizontal">
-				<Button Style="{ThemeResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowTaskbar">
-					<FontIcon Glyph="&#xF08E;" FontSize="10" />
+			<StackPanel Grid.Column="2" Orientation="Horizontal">
+				<Button Style="{ThemeResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowTheme">
+					<FontIcon Glyph="&#xF08C;" FontSize="14" />
 				</Button>
 				<Button Style="{ThemeResource WindowsButton}" Click="WindowsButton_OnClick" Tag="WindowMinimise">
 					<FontIcon Glyph="&#xE654;" FontSize="10" />
@@ -44,130 +66,224 @@
 				</Button>
 			</StackPanel>
 		</Grid>
-		<Grid Grid.Row="1" Margin="12,0,12,0">
-			<controls:TabbedCommandBar>
-				<controls:TabbedCommandBar.PaneFooter>
-					<CommandBar DefaultLabelPosition="Right">
-						<AppBarButton Label="设置" Icon="Setting" />
-					</CommandBar>
-				</controls:TabbedCommandBar.PaneFooter>
-				<controls:TabbedCommandBar.MenuItems>
-					<controls:TabbedCommandBarItem x:Name="TabbedCommandBarItem" Header="开始">
-						<AppBarElementContainer>
-							<StackPanel Orientation="Horizontal">
-								<ComboBox x:Name="DataComboBox" Margin="6,0,0,0" PlaceholderText="选择数据模式" Width="150">
-									<ComboBoxItem Content="全部删除" ToolTipService.ToolTip="不保留数据刷机" Tag="Delete" />
-									<ComboBoxItem Content="保留数据" ToolTipService.ToolTip="保留数据刷机" Tag="Retain" />
-									<ComboBoxItem Content="删除并Lock" ToolTipService.ToolTip="不保留数据刷机并上锁" Tag="DeleteAndLock" />
-								</ComboBox>
-								<ComboBox x:Name="ChooseSocComboBox" Margin="12,0,0,0" PlaceholderText="选择SOC类型" Width="150" SelectionChanged="ChooseSocComboBox_OnSelectionChanged">
-									<ComboBoxItem Content="Qualcomm" ToolTipService.ToolTip="骁龙" Tag="Qualcomm" />
-									<ComboBoxItem Content="MTK" ToolTipService.ToolTip="联发科" Tag="MTK" IsEnabled="False" />
-								</ComboBox>
-								<ComboBox x:Name="ChooseModeComboBox" Margin="12,0,6,0" PlaceholderText="选择刷机模式" Width="150">
-									<ComboBoxItem Content="Fastboot" ToolTipService.ToolTip="Fastboot模式" Tag="Fastboot" />
-									<ComboBoxItem Content="9008" ToolTipService.ToolTip="9008模式" Tag="9008" IsEnabled="False" />
-								</ComboBox>
+		<Grid Grid.Row="1" Margin="12">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Grid Grid.Column="0" Margin="0,0,12,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="4*" />
+					<RowDefinition Height="3*" />
+				</Grid.RowDefinitions>
+				<Border Grid.Row="0" Margin="0,0,0,8" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<local:BarTitle Grid.Row="0" Header="Flash配置" IconGlyph="&#xE713;">
+							<local:BarTitle.RightContent>
+								<StackPanel Orientation="Horizontal" Spacing="8">
+									<ProgressRing IsActive="False" Height="18" Width="18" />
+									<Button Content="终止" Visibility="Collapsed" />
+									<SplitButton Content="刷入ROM">
+										<SplitButton.Flyout>
+											<MenuFlyout Placement="Bottom">
+												<MenuFlyoutItem Text="清除配置（测试）" Click="MenuFlyoutItem_OnClick">
+													<MenuFlyoutItem.Icon>
+														<FontIcon Glyph="&#xE725;" />
+													</MenuFlyoutItem.Icon>
+												</MenuFlyoutItem>
+												<MenuFlyoutItem Text="ADB指令" Click="MenuFlyoutItem1_OnClick">
+													<MenuFlyoutItem.Icon>
+														<FontIcon Glyph="&#xE726;" />
+													</MenuFlyoutItem.Icon>
+												</MenuFlyoutItem>
+											</MenuFlyout>
+										</SplitButton.Flyout>
+									</SplitButton>
+								</StackPanel>
+							</local:BarTitle.RightContent>
+						</local:BarTitle>
+						<ScrollView Grid.Row="1" Margin="8,0,8,8">
+							<StackPanel Spacing="8">
+								<local:SettingsCard Header="SOC型号" Description="为什么不能选？那是因为作者只有骁龙版😭" IconGlyph="&#xEEA1;">
+									<local:SettingsCard.RightContent>
+										<ComboBox x:Name="SettingsCardQualcomm" PlaceholderText="Qualcomm">
+											<ComboBoxItem Content="骁龙" />
+											<ComboBoxItem Content="qualcomm" />
+											<ComboBoxItem Content="Qualcomm" />
+											<ComboBoxItem Content="QUALCOMM" />
+										</ComboBox>
+									</local:SettingsCard.RightContent>
+								</local:SettingsCard>
+								<local:SettingsCard x:Name="SettingsCardMode" Header="刷入模式" Description="选择一下啊" IconGlyph="&#xE754;">
+									<local:SettingsCard.RightContent>
+										<ComboBox x:Name="ComboBoxmode" PlaceholderText="选择一下啊" SelectionChanged="MyComboBox_SelectionChanged">
+											<ComboBoxItem Content="全部删除" Tag="flash_all.bat" />
+											<ComboBoxItem Content="保留用户数据" Tag="flash_all_except_storage.bat" />
+											<ComboBoxItem Content="全部删除并Lock" Tag="flash_all_lock.bat" />
+										</ComboBox>
+									</local:SettingsCard.RightContent>
+								</local:SettingsCard>
+								<local:SettingsCard x:Name="SettingsCard111" Header="包地址" Description="选择包地址啊" IconGlyph="&#xE7B8;">
+									<local:SettingsCard.RightContent>
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<Button x:Name="aButton" Content="选择" Visibility="Visible" IsEnabled="True" Click="ButtonBase_OnClick" />
+											<Button x:Name="bButton" Content="清除" Visibility="Collapsed" IsEnabled="False" Click="BButton_OnClick" />
+										</StackPanel>
+									</local:SettingsCard.RightContent>
+								</local:SettingsCard>
 							</StackPanel>
-						</AppBarElementContainer>
-						<AppBarSeparator />
-						<AppBarElementContainer>
-							<StackPanel Orientation="Horizontal">
-								<Button Content="加载设备" Margin="6,0,0,0" Width="80" Style="{ThemeResource AccentButtonStyle}" Click="AddInventoryItem" />
-								<Button Content="刷机" Margin="12,0,0,0" Width="80" Style="{ThemeResource AccentButtonStyle}" />
-							</StackPanel>
-						</AppBarElementContainer>
-					</controls:TabbedCommandBarItem>
-					<controls:TabbedCommandBarItem Header="登录">
-						<AppBarElementContainer>
-						</AppBarElementContainer>
-					</controls:TabbedCommandBarItem>
-				</controls:TabbedCommandBar.MenuItems>
-			</controls:TabbedCommandBar>
-		</Grid>
-		<Border Grid.Row="2" Margin="12,6,12,6" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
-			<Grid>
-				<Grid x:Name="QualcommGrid" Height="48" Visibility="Collapsed">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<Button Grid.Column="0" x:Name="QualcommButton" MinWidth="150" Content="选择包" VerticalAlignment="Center" Margin="12,0,12,0" Click="QualcommButton_OnClick" />
-					<TextBox Grid.Column="1" x:Name="QualcommTextBox" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" PlaceholderText="请选择文件路径" />
-				</Grid>
-				<Grid x:Name="MTKGrid" Height="144" Visibility="Collapsed">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="48" />
-						<RowDefinition Height="48" />
-						<RowDefinition Height="48" />
-					</Grid.RowDefinitions>
-					<Button Grid.Row="0" Grid.Column="0" MinWidth="150" Content="选择Scatter" VerticalAlignment="Center" Margin="12,0,12,0" />
-					<TextBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
-					<Button Grid.Row="1" Grid.Column="0" MinWidth="150" Content="选择DA" VerticalAlignment="Center" Margin="12,0,12,0" />
-					<TextBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
-					<Button Grid.Row="2" Grid.Column="0" MinWidth="150" Content="选择Auth" VerticalAlignment="Center" Margin="12,0,12,0" />
-					<TextBox Grid.Row="2" Grid.Column="1" Height="24" VerticalAlignment="Center" Margin="0,0,12,0" />
-				</Grid>
+						</ScrollView>
+					</Grid>
+				</Border>
+				<Border Grid.Row="1" Margin="0,8,0,0" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<local:BarTitle Grid.Row="0" Header="设备列表" IconGlyph="&#xE9A4;">
+							<local:BarTitle.RightContent>
+								<StackPanel Orientation="Horizontal" Spacing="8">
+									<ProgressRing IsActive="False" Height="18" Width="18" />
+									<SplitButton Content="加载设备">
+										<SplitButton.Flyout>
+											<MenuFlyout Placement="Bottom">
+												<MenuFlyoutItem Text="加载设备（测试）" Click="AddInventoryItem" />
+												<MenuFlyoutItem Text="清除设备" Click="delInventoryItem2" />
+											</MenuFlyout>
+										</SplitButton.Flyout>
+									</SplitButton>
+								</StackPanel>
+							</local:BarTitle.RightContent>
+						</local:BarTitle>
+						<Border Grid.Row="1" Margin="8,0,8,8" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource ControlCornerRadius}">
+							<Grid Padding="16,10" ColumnSpacing="16">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="1*" />
+									<ColumnDefinition Width="2*" />
+									<ColumnDefinition Width="4*" />
+									<ColumnDefinition Width="2*" />
+									<ColumnDefinition Width="2*" />
+									<!-- <ColumnDefinition Width="3*" /> -->
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="ID" Tag="ID" />
+								<TextBlock Grid.Column="1" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="设备" Tag="Device" />
+								<TextBlock Grid.Column="2" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="进度" Tag="Load" />
+								<TextBlock Grid.Column="3" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="时间" Tag="Time" />
+								<TextBlock Grid.Column="4" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="状态" Tag="State" />
+								<!-- <TextBlock Grid.Column="5" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="结果" Tag="Results" /> -->
+							</Grid>
+						</Border>
+						<ListView Grid.Row="2" Margin="3,0,3,0" SelectionMode="Extended" ItemsSource="{x:Bind InventoryItems}">
+							<ListView.ItemTemplate>
+								<DataTemplate x:DataType="local:InventoryItem">
+									<Grid ColumnSpacing="16">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="1*" />
+											<ColumnDefinition Width="2*" />
+											<ColumnDefinition Width="4*" />
+											<ColumnDefinition Width="2*" />
+											<ColumnDefinition Width="2*" />
+										</Grid.ColumnDefinitions>
+										<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
+										<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />
+										<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+											<ProgressBar Width="80" Value="{x:Bind Load}" Margin="0,0,12,0" />
+											<TextBlock FontStyle="Italic" Text="{x:Bind Load}" />
+											<TextBlock FontStyle="Italic" Text="%" />
+										</StackPanel>
+										<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
+											<TextBlock FontStyle="Italic" TextAlignment="Center" Text="{x:Bind Time}" />
+											<TextBlock FontStyle="Italic" Text="S" />
+										</StackPanel>
+										<TextBlock Grid.Column="4" TextAlignment="Center" Text="{x:Bind State}" />
+									</Grid>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</Grid>
+				</Border>
 			</Grid>
-		</Border>
-		<Border Grid.Row="3" Margin="12,0,12,12" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
-			<Grid>
+			<Grid Grid.Column="1" Margin="0,0,0,0">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
-				<Border Grid.Row="0" Margin="6,6,6,6" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource ControlCornerRadius}">
-					<Grid Padding="16,10" ColumnSpacing="16">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="2*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="5*" />
-							<ColumnDefinition Width="1*" />
-						</Grid.ColumnDefinitions>
-						<TextBlock Grid.Column="0" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="编号" Tag="ID" />
-						<TextBlock Grid.Column="1" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="设备" Tag="Device" />
-						<TextBlock Grid.Column="2" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="进度" Tag="Load" />
-						<TextBlock Grid.Column="3" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="时间" Tag="Time" />
-						<TextBlock Grid.Column="4" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="状态" Tag="State" />
-						<TextBlock Grid.Column="5" TextAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="结果" Tag="Results" />
+				<Border Grid.Row="0" x:Name="Border11" Visibility="Collapsed" Margin="0,0,0,8" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<local:BarTitle Grid.Row="0" Header="ADB指令" IconGlyph="&#xE726;">
+							<local:BarTitle.RightContent>
+								<StackPanel Orientation="Horizontal" Spacing="8">
+									<Button Visibility="Visible" Background="Transparent" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<FontIcon Glyph="&#xE726;" Height="16" />
+											<TextBlock Text="重启手机" />
+										</StackPanel>
+									</Button>
+									<Button Visibility="Visible" Background="Transparent" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<FontIcon Glyph="&#xE726;" Height="16" />
+											<TextBlock Text="进入Fastboot" />
+										</StackPanel>
+									</Button>
+									<Button Visibility="Visible" Background="Transparent" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<FontIcon Glyph="&#xE726;" Height="16" />
+											<TextBlock Text="进入Recovery" />
+										</StackPanel>
+									</Button>
+								</StackPanel>
+							</local:BarTitle.RightContent>
+						</local:BarTitle>
 					</Grid>
 				</Border>
-				<ListView Grid.Row="1" Margin="3,0,3,0" ItemsSource="{x:Bind InventoryItems}">
-					<ListView.ItemTemplate>
-						<DataTemplate x:DataType="local:InventoryItem">
-							<Grid ColumnSpacing="16">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="1*" />
-									<ColumnDefinition Width="1*" />
-									<ColumnDefinition Width="2*" />
-									<ColumnDefinition Width="1*" />
-									<ColumnDefinition Width="5*" />
-									<ColumnDefinition Width="1*" />
-								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Column="0" TextAlignment="Center" Text="{x:Bind ID}" />
-								<TextBlock Grid.Column="1" TextAlignment="Center" Text="{x:Bind Device}" />
-								<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
-									<ProgressBar Width="80" Value="{x:Bind Load}" Margin="0,0,12,0" />
-									<TextBlock FontStyle="Italic" Text="{x:Bind Load}" />
-									<TextBlock FontStyle="Italic" Text="%" />
+				<Border Grid.Row="1" Margin="0,0,0,0" BorderBrush="{ThemeResource ControlFillColorDefaultBrush}" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="{ThemeResource OverlayCornerRadius}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<local:BarTitle Grid.Row="0" Header="输出文本" IconGlyph="&#xE9A4;">
+							<local:BarTitle.RightContent>
+								<StackPanel Orientation="Horizontal" Spacing="8">
+									<ProgressRing IsActive="False" Height="18" Width="18" />
+									<SplitButton Content="保存文本" IsEnabled="True">
+										<SplitButton.Flyout>
+											<MenuFlyout Placement="Bottom">
+												<MenuFlyoutItem Text="写文本（测试）" Click="TextWrite">
+													<MenuFlyoutItem.Icon>
+														<FontIcon Glyph="&#xE725;" />
+													</MenuFlyoutItem.Icon>
+												</MenuFlyoutItem>
+												<MenuFlyoutItem Text="删文本（测试）" Click="TextClear">
+													<MenuFlyoutItem.Icon>
+														<FontIcon Glyph="&#xE8CA;" />
+													</MenuFlyoutItem.Icon>
+												</MenuFlyoutItem>
+											</MenuFlyout>
+										</SplitButton.Flyout>
+									</SplitButton>
 								</StackPanel>
-								<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
-									<TextBlock FontStyle="Italic" TextAlignment="Center" Text="{x:Bind Time}" />
-									<TextBlock FontStyle="Italic" Text="S" />
-								</StackPanel>
-								<TextBlock Grid.Column="4" TextAlignment="Center" Text="{x:Bind State}" />
-								<TextBlock Grid.Column="5" TextAlignment="Center" Text="{x:Bind Results}" />
-							</Grid>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>
+							</local:BarTitle.RightContent>
+						</local:BarTitle>
+						<ScrollView Grid.Row="1" Margin="8,0,8,8">
+							<StackPanel Spacing="8">
+								<Border Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="{ThemeResource ControlCornerRadius}">
+									<TextBlock Margin="8" TextWrapping="WrapWholeWords" x:Name="TextBlock11111" IsTextSelectionEnabled="True" />
+								</Border>
+							</StackPanel>
+						</ScrollView>
+					</Grid>
+				</Border>
 			</Grid>
-		</Border>
+		</Grid>
 	</Grid>
 </Window>
