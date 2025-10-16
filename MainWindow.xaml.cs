@@ -55,6 +55,8 @@ namespace MiFlashForWinUI3
 			_current = this;
 
 			_appWindow.Changed += AppWindow_Changed;
+
+			Closed += (s, e) => _appWindow.Changed -= AppWindow_Changed;
 		}
 
 		private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
